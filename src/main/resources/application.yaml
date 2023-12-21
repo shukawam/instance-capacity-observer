@@ -1,0 +1,15 @@
+# Microprofile server properties
+server:
+  port: 8080
+  host: 0.0.0.0
+
+# Change the following to true to enable the optional MicroProfile Metrics REST.request metrics
+metrics:
+  rest-request:
+    enabled: true
+
+# Application properties. This is the default greeting
+oci:
+  tenancyId: ocid1.tenancy.oc1..aaaaaaaa3mb7wrcy2ls3u3jsy2soq5ck3lc3q4mczitpdaymbuazc5tkguca
+  compartmentId: ocid1.compartment.oc1..aaaaaaaanjtbllhqxcg67dq7em3vto2mvsbc6pbgk4pw6cx37afzk3tngmoa
+  shapes: BM.GPU.H100.8,BM.GPU.A100-v2.8,BM.GPU4.8

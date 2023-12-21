@@ -1,0 +1,36 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: instance-capacity-observer
+  labels:
+    app: instance-capacity-observer
+spec:
+  type: NodePort
+  selector:
+    app: instance-capacity-observer
+  ports:
+  - port: 8080
+    targetPort: 8080
+    name: http
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: instance-capacity-observer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: instance-capacity-observer
+  template:
+    metadata:
+      labels:
+        app: instance-capacity-observer
+        version: v1
+    spec:
+      containers:
+      - name: instance-capacity-observer
+        image: instance-capacity-observer
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
