@@ -64,6 +64,7 @@ public class InstanceCapacityReportService {
                     LOGGER.info(String.format("Shape %s is %s.", availability.getInstanceShape(), status));
                     var tags = new ArrayList<Tag>();
                     tags.add(new Tag("availability_domain", ad));
+                    tags.add(new Tag("fault_domain", availability.getFaultDomain()));
                     tags.add(new Tag("shape", availability.getInstanceShape()));
                     tags.add(new Tag("status", availability.getAvailabilityStatus().getValue()));
                     metricRegistry.gauge("gpu_shape_status", () -> getAvailableCount(availability),
@@ -136,13 +137,13 @@ public class InstanceCapacityReportService {
         computeClient.setRegion(region);
     }
 
-    private long getAvailableCount(CapacityReportShapeAvailability availability) {
+    private Long getAvailableCount(CapacityReportShapeAvailability availability) {
         var count = availability.getAvailableCount();
         LOGGER.info(String.format("Available count: ", count));
         if (count == null) {
-            return 0;
+            return Long.valueOf(0);
         } else {
-            return count.longValue();
+            return count;
         }
 
     }
