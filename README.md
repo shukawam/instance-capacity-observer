@@ -1,158 +1,56 @@
-# instance-capacity-observer
+# gpu-capacity-exporter
 
-Sample Helidon MP project that includes multiple REST operations.
+Exporter of the GPU(A.100, H.100) capacity.
 
 ## Build and run
 
+build
 
-With JDK21
-```bash
-mvn package
-java -jar target/instance-capacity-observer.jar
+```sh
+./mvnw package
 ```
 
-## Exercise the application
+run
 
-Basic:
-```
-curl -X GET http://localhost:8080/simple-greet
-Hello World!
+```sh
+java -jar target/gpu-capacity-exporter.jar
 ```
 
+(or Helidon CLI)
 
-JSON:
-```
-curl -X GET http://localhost:8080/greet
-{"message":"Hello World!"}
-
-curl -X GET http://localhost:8080/greet/Joe
-{"message":"Hello Joe!"}
-
-curl -X PUT -H "Content-Type: application/json" -d '{"greeting" : "Hola"}' http://localhost:8080/greet/greeting
-
-curl -X GET http://localhost:8080/greet/Jose
-{"message":"Hola Jose!"}
+```sh
+helidon dev
 ```
 
+## Try capacity export
 
+```sh
+curl http://localhost:8080/capacity/report
+```
+
+Then, look at stdlog.
+
+```sh
+2024.01.09 17:53:28 INFO me.shukawam.InstanceCapacityReportResource VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: This endpoint is only used for debug.
+2024.01.09 17:53:30 INFO me.shukawam.InstanceCapacityReportService VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: Generate compute capacity report.
+2024.01.09 17:53:34 INFO me.shukawam.InstanceCapacityReportService VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: BM.GPU.H100.8 TGjA:EU-FRANKFURT-1-AD-1 FAULT-DOMAIN-1 >> HARDWARE_NOT_SUPPORTED
+2024.01.09 17:53:34 INFO me.shukawam.InstanceCapacityReportService VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: BM.GPU.A100-v2.8 TGjA:EU-FRANKFURT-1-AD-1 FAULT-DOMAIN-1 >> HARDWARE_NOT_SUPPORTED
+2024.01.09 17:53:34 INFO me.shukawam.InstanceCapacityReportService VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: BM.GPU4.8 TGjA:EU-FRANKFURT-1-AD-1 FAULT-DOMAIN-1 >> HARDWARE_NOT_SUPPORTED
+2024.01.09 17:53:35 INFO me.shukawam.InstanceCapacityReportService VirtualThread[#32,[0x7de301ae 0x0195767c] WebServer socket]/runnable@ForkJoinPool-1-worker-1: BM.GPU.H100.8 TGjA:EU-FRANKFURT-1-AD-1 FAULT-DOMAIN-2 >> HARDWARE_NOT_SUPPORTED
+# ... omit ...
+```
 
 ## Try metrics
 
-```
-# Prometheus Format
-curl -s -X GET http://localhost:8080/metrics
-# TYPE base:gc_g1_young_generation_count gauge
-. . .
-
-# JSON Format
-curl -H 'Accept: application/json' -X GET http://localhost:8080/metrics
-{"base":...
-. . .
+```sh
+curl http://localhost:8080/metrics | grep -i gpu
 ```
 
+You can get `gpu_shape_status` metrics via prometheus format.
 
-
-## Try health
-
+```sh
+gpu_shape_status{availability_domain="TGjA:EU-FRANKFURT-1-AD-2",fault_domain="FAULT-DOMAIN-1",mp_scope="application",shape="BM.GPU.H100.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
+gpu_shape_status{availability_domain="TGjA:PHX-AD-1",fault_domain="FAULT-DOMAIN-1",mp_scope="application",shape="BM.GPU4.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
+gpu_shape_status{availability_domain="TGjA:EU-FRANKFURT-1-AD-1",fault_domain="FAULT-DOMAIN-2",mp_scope="application",shape="BM.GPU4.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
+gpu_shape_status{availability_domain="TGjA:PHX-AD-2",fault_domain="FAULT-DOMAIN-1",mp_scope="application",shape="BM.GPU.A100-v2.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
 ```
-curl -s -X GET http://localhost:8080/health
-{"outcome":"UP",...
-
-```
-
-
-## Building a Native Image
-
-The generation of native binaries requires an installation of GraalVM 22.1.0+.
-
-You can build a native binary using Maven as follows:
-
-```
-mvn -Pnative-image install -DskipTests
-```
-
-The generation of the executable binary may take a few minutes to complete depending on
-your hardware and operating system. When completed, the executable file will be available
-under the `target` directory and be named after the artifact ID you have chosen during the
-project generation phase.
-
-
-
-## Building the Docker Image
-
-```
-docker build -t instance-capacity-observer .
-```
-
-## Running the Docker Image
-
-```
-docker run --rm -p 8080:8080 instance-capacity-observer:latest
-```
-
-Exercise the application as described above.
-                                
-
-## Run the application in Kubernetes
-
-If you don’t have access to a Kubernetes cluster, you can [install one](https://helidon.io/docs/latest/#/about/kubernetes) on your desktop.
-
-### Verify connectivity to cluster
-
-```
-kubectl cluster-info                        # Verify which cluster
-kubectl get pods                            # Verify connectivity to cluster
-```
-
-### Deploy the application to Kubernetes
-
-```
-kubectl create -f app.yaml                  # Deploy application
-kubectl get pods                            # Wait for quickstart pod to be RUNNING
-kubectl get service  instance-capacity-observer         # Get service info
-```
-
-Note the PORTs. You can now exercise the application as you did before but use the second
-port number (the NodePort) instead of 8080.
-
-After you’re done, cleanup.
-
-```
-kubectl delete -f app.yaml
-```
-                                
-
-## Building a Custom Runtime Image
-
-Build the custom runtime image using the jlink image profile:
-
-```
-mvn package -Pjlink-image
-```
-
-This uses the helidon-maven-plugin to perform the custom image generation.
-After the build completes it will report some statistics about the build including the reduction in image size.
-
-The target/instance-capacity-observer-jri directory is a self contained custom image of your application. It contains your application,
-its runtime dependencies and the JDK modules it depends on. You can start your application using the provide start script:
-
-```
-./target/instance-capacity-observer-jri/bin/start
-```
-
-Class Data Sharing (CDS) Archive
-Also included in the custom image is a Class Data Sharing (CDS) archive that improves your application’s startup
-performance and in-memory footprint. You can learn more about Class Data Sharing in the JDK documentation.
-
-The CDS archive increases your image size to get these performance optimizations. It can be of significant size (tens of MB).
-The size of the CDS archive is reported at the end of the build output.
-
-If you’d rather have a smaller image size (with a slightly increased startup time) you can skip the creation of the CDS
-archive by executing your build like this:
-
-```
-mvn package -Pjlink-image -Djlink.image.addClassDataSharingArchive=false
-```
-
-For more information on available configuration options see the helidon-maven-plugin documentation.
-                                
