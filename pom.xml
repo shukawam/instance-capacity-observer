@@ -10,7 +10,7 @@
         <relativePath/>
     </parent>
     <groupId>me.shukawam</groupId>
-    <artifactId>instance-capacity-observer</artifactId>
+    <artifactId>gpu-capacity-exporter</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
