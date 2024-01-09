@@ -164,6 +164,7 @@ public class InstanceCapacityReportService {
         computeClient.setRegion(region);
     }
 
+    // TODO: Always return 0, because getAvailabilityCount is always return null.
     private Long getAvailableCount(CapacityReportShapeAvailability availability) {
         var count = availability.getAvailableCount();
         LOGGER.info(String.format("Available count: %s", count));
