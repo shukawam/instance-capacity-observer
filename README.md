@@ -53,4 +53,5 @@ gpu_shape_status{availability_domain="TGjA:EU-FRANKFURT-1-AD-2",fault_domain="FA
 gpu_shape_status{availability_domain="TGjA:PHX-AD-1",fault_domain="FAULT-DOMAIN-1",mp_scope="application",shape="BM.GPU4.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
 gpu_shape_status{availability_domain="TGjA:EU-FRANKFURT-1-AD-1",fault_domain="FAULT-DOMAIN-2",mp_scope="application",shape="BM.GPU4.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
 gpu_shape_status{availability_domain="TGjA:PHX-AD-2",fault_domain="FAULT-DOMAIN-1",mp_scope="application",shape="BM.GPU.A100-v2.8",status="HARDWARE_NOT_SUPPORTED",} 0.0
+# ... omit ...
 ```
