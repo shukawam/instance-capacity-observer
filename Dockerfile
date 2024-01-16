@@ -6,7 +6,7 @@ ADD src src
 RUN mvn package -DskipTests
 RUN echo "done!"
 
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21.0.1_12-jre
 WORKDIR /helidon
 COPY --from=build /helidon/target/instance-capacity-observer.jar ./
 COPY --from=build /helidon/target/libs ./libs
