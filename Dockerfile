@@ -8,7 +8,7 @@ RUN echo "done!"
 
 FROM eclipse-temurin:21.0.1_12-jre
 WORKDIR /helidon
-COPY --from=build /helidon/target/instance-capacity-observer.jar ./
+COPY --from=build /helidon/target/gpu-capacity-exporter.jar ./
 COPY --from=build /helidon/target/libs ./libs
-CMD ["java", "-jar", "instance-capacity-observer.jar"]
+CMD ["java", "-jar", "gpu-capacity-exporter.jar"]
 EXPOSE 8080

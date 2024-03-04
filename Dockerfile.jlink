@@ -30,6 +30,6 @@ RUN echo "done!"
 
 FROM debian:stretch-slim
 WORKDIR /helidon
-COPY --from=build /helidon/target/instance-capacity-observer-jri ./
+COPY --from=build /helidon/target/gpu-capacity-exporter-jri ./
 ENTRYPOINT ["/bin/bash", "/helidon/bin/start"]
 EXPOSE 8080

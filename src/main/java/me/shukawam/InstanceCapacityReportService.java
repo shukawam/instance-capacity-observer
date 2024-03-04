@@ -65,9 +65,9 @@ public class InstanceCapacityReportService {
                 faultDomains.forEach(faultDomain -> {
                     var capacityReport = createComputeCapacityReportResponse(availabilityDomain, faultDomain);
                     capacityReport.getShapeAvailabilities().forEach(availability -> {
-                        var status = availability.getAvailabilityStatus().getValue();
-                        LOGGER.info(String.format("%s %s %s >> %s", availability.getInstanceShape(), availabilityDomain,
-                                faultDomain, status));
+                        LOGGER.info(String.format("%s %s/%s >> %s {%s}", availability.getInstanceShape(), faultDomain,
+                                availabilityDomain, availability.getAvailabilityStatus().getValue(),
+                                availability.getAvailableCount()));
                         var tags = new ArrayList<Tag>();
                         tags.add(new Tag("availability_domain", availabilityDomain));
                         tags.add(new Tag("fault_domain", faultDomain));
@@ -129,10 +129,9 @@ public class InstanceCapacityReportService {
     private ComputeCapacityReport createComputeCapacityReportResponse(String availabilityDomain, String faultDomain) {
         var request = CreateComputeCapacityReportRequest.builder()
                 .createComputeCapacityReportDetails(
-                        CreateComputeCapacityReportDetails
-                                .builder().availabilityDomain(
-                                        availabilityDomain)
-                                .compartmentId(compartmentId)
+                        CreateComputeCapacityReportDetails.builder().availabilityDomain(availabilityDomain)
+                                .compartmentId(
+                                        compartmentId)
                                 .shapeAvailabilities(new ArrayList<>(Arrays.asList(
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("BM.GPU.H100.8").faultDomain(faultDomain)
@@ -148,6 +147,21 @@ public class InstanceCapacityReportService {
                                                 .instanceShape("BM.GPU4.8").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(64.0f).memoryInGBs(2048.0f).build())
+                                                .build(),
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("BM.GPU.A10.4").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(64.0f).memoryInGBs(1024.0f).build())
+                                                .build(),
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU.A10.1").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(15.0f).memoryInGBs(240.0f).build())
+                                                .build(),
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU.A10.2").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(30.0f).memoryInGBs(480.0f).build())
                                                 .build())))
                                 .build())
                 .build();
@@ -167,7 +181,6 @@ public class InstanceCapacityReportService {
     // TODO: Always return 0, because getAvailabilityCount is always return null.
     private Long getAvailableCount(CapacityReportShapeAvailability availability) {
         var count = availability.getAvailableCount();
-        LOGGER.info(String.format("Available count: %s", count));
         if (count == null) {
             return Long.valueOf(0);
         } else {

@@ -32,8 +32,8 @@ FROM scratch
 WORKDIR /helidon
 
 # Copy the binary built in the 1st stage
-COPY --from=build /helidon/target/instance-capacity-observer .
+COPY --from=build /helidon/target/gpu-capacity-exporter .
 
-ENTRYPOINT ["./instance-capacity-observer"]
+ENTRYPOINT ["./gpu-capacity-exporter"]
 
 EXPOSE 8080
