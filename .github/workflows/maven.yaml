@@ -40,6 +40,6 @@ jobs:
         with:
           push: true
           tags: |
-            ${{ env.IMAGE }}:1.0.2
+            ${{ env.IMAGE }}:1.0.3
         env:
           IMAGE: nrt.ocir.io/orasejapan/shukawam/gpu-capacity-exporter
