@@ -133,31 +133,73 @@ public class InstanceCapacityReportService {
                                 .compartmentId(
                                         compartmentId)
                                 .shapeAvailabilities(new ArrayList<>(Arrays.asList(
+                                        // BM H100 80GB x 8
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("BM.GPU.H100.8").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(112.0f).memoryInGBs(2048.0f).build())
                                                 .build(),
+                                        // BM A100 40GB x 8
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("BM.GPU.A100-v2.8").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(128.0f).memoryInGBs(2048.0f).build())
                                                 .build(),
+                                        // BM A100 80GB x 8
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("BM.GPU4.8").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(64.0f).memoryInGBs(2048.0f).build())
                                                 .build(),
+                                        // BM V100 x 8
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("BM.GPU3.8").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(52.0f).memoryInGBs(768.0f).build())
+                                                .build(),
+                                        // VM V100 x 4 
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU3.4").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(24.0f).memoryInGBs(360.0f).build())
+                                                .build(),
+                                        // VM V100 x 2
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU3.2").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(12.0f).memoryInGBs(180.0f).build())
+                                                .build(),   
+                                        // VM V100 x 1
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU3.1").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(6.0f).memoryInGBs(90.0f).build())
+                                                .build(),
+                                        // VM P100 x 2
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU2.2").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(28.0f).memoryInGBs(72.0f).build())
+                                                .build(),
+                                        // VM P100 x 1
+                                        CreateCapacityReportShapeAvailabilityDetails.builder()
+                                                .instanceShape("VM.GPU2.1").faultDomain(faultDomain)
+                                                .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
+                                                        .ocpus(12.0f).memoryInGBs(192.0f).build())
+                                                .build(),
+                                        // BM A10 x 4
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("BM.GPU.A10.4").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(64.0f).memoryInGBs(1024.0f).build())
                                                 .build(),
+                                        // VM A10 x 1
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("VM.GPU.A10.1").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
                                                         .ocpus(15.0f).memoryInGBs(240.0f).build())
                                                 .build(),
+                                        // VM A10 x 2
                                         CreateCapacityReportShapeAvailabilityDetails.builder()
                                                 .instanceShape("VM.GPU.A10.2").faultDomain(faultDomain)
                                                 .instanceShapeConfig(CapacityReportInstanceShapeConfig.builder()
