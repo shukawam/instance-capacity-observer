@@ -15,7 +15,7 @@
 
     <properties>
         <oci.sdk.version>3.29.0</oci.sdk.version>
-        <maven.formatter.plugin.version>2.23.0</maven.formatter.plugin.version>
+        <maven.formatter.plugin.version>2.24.1</maven.formatter.plugin.version>
     </properties>
 
     <dependencies>
