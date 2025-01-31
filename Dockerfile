@@ -6,7 +6,7 @@ ADD src src
 RUN mvn package -DskipTests
 RUN echo "done!"
 
-FROM eclipse-temurin:21.0.1_12-jre
+FROM eclipse-temurin:21.0.6_7-jre
 WORKDIR /helidon
 COPY --from=build /helidon/target/gpu-capacity-exporter.jar ./
 COPY --from=build /helidon/target/libs ./libs
